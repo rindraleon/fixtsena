@@ -1,0 +1,26 @@
+node_modules/
+dist/
+.env
+*.js.map
+*.d.ts
+!src/**/*.d.ts
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Testing
+coverage/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log
+
+# Données locales éventuelles (dossiers MinIO montés par docker-compose)
+/storage/
+/data/

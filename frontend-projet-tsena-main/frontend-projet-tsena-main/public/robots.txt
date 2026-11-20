@@ -1,0 +1,13 @@
+# Tsena — règles d'exploration
+User-agent: *
+Allow: /
+# Espaces privés et pages transactionnelles (également marquées noindex)
+Disallow: /dashboard/
+Disallow: /commande/
+Disallow: /panier
+Disallow: /favoris
+Disallow: /reinitialiser-mot-de-passe
+Disallow: /verification-email
+Disallow: /mot-de-passe-oublie
+
+Sitemap: /sitemap.xml

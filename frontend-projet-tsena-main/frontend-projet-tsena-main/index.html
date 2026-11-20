@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Tsena — La marketplace de confiance à Madagascar</title>
+    <meta
+      name="description"
+      content="Tsena est une marketplace malgache qui met en relation acheteurs et vendeurs vérifiés : paiement protégé en séquestre jusqu’à la réception, mobile money ou paiement à la livraison, litiges arbitrés."
+    />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#0d3b2e" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="application-name" content="Tsena" />
+    <meta name="apple-mobile-web-app-title" content="Tsena" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Open Graph / Twitter (valeurs par défaut, mises à jour dynamiquement par page) -->
+    <meta property="og:site_name" content="Tsena" />
+    <meta property="og:locale" content="fr_MG" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Tsena — La marketplace de confiance à Madagascar" />
+    <meta
+      property="og:description"
+      content="Achetez et vendez en toute confiance : paiement protégé en séquestre, vendeurs vérifiés, mobile money ou paiement à la livraison."
+    />
+    <meta property="og:image" content="__SITE_URL__/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tsena — La marketplace de confiance à Madagascar" />
+    <meta
+      name="twitter:description"
+      content="Achetez et vendez en toute confiance : paiement protégé en séquestre, vendeurs vérifiés, mobile money ou paiement à la livraison."
+    />
+    <meta name="twitter:image" content="__SITE_URL__/og-image.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Loader d'amorçage : styles critiques, indépendants du bundle et de Tailwind -->
+    <style>
+      #boot-loader {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 16px;
+        min-height: 100vh;
+        margin: 0;
+        background: #f8f9fa;
+        font-family:
+          'Manrope',
+          system-ui,
+          -apple-system,
+          sans-serif;
+        color: #0d3b2e;
+      }
+      #boot-loader .boot-ring {
+        width: 44px;
+        height: 44px;
+        border-radius: 9999px;
+        border: 3px solid rgba(13, 59, 46, 0.15);
+        border-top-color: #0d3b2e;
+        border-right-color: #2d8a6b;
+        animation: boot-spin 0.9s linear infinite;
+      }
+      #boot-loader .boot-label {
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #6b7280;
+      }
+      @keyframes boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (prefers-color-scheme: dark) {
+        #boot-loader {
+          background: #0f1117;
+          color: #e2e8f0;
+        }
+        #boot-loader .boot-ring {
+          border-color: rgba(52, 211, 153, 0.2);
+          border-top-color: #34d399;
+          border-right-color: #6ee7b7;
+        }
+        #boot-loader .boot-label {
+          color: #94a3b8;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #boot-loader .boot-ring {
+          animation: boot-spin 2.4s linear infinite;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root">
+      <div id="boot-loader" role="status" aria-live="polite">
+        <div class="boot-ring" aria-hidden="true"></div>
+        <p class="boot-label">Chargement de Tsena…</p>
+      </div>
+    </div>
+    <noscript>
+      <div style="padding: 40px; text-align: center; font-family: sans-serif; color: #111">
+        <p>
+          <strong>Tsena</strong> nécessite JavaScript pour fonctionner. Veuillez l’activer dans
+          votre navigateur.
+        </p>
+      </div>
+    </noscript>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

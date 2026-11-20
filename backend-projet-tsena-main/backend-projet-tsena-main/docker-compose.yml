@@ -1,0 +1,68 @@
+name: tsena
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: tsena-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-tsena}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-tsena}
+      POSTGRES_DB: ${POSTGRES_DB:-tsena}
+    ports:
+      - '${POSTGRES_PORT:-5432}:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-tsena} -d ${POSTGRES_DB:-tsena}']
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  minio:
+    image: ${MINIO_IMAGE:-pgsty/silo:RELEASE.2026-11-09T00-00-00Z}
+    container_name: tsena-minio
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY:-tsena}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY:-tsena-secret-change-me}
+    ports:
+      - '${MINIO_PORT:-9000}:9000'
+      - '${MINIO_CONSOLE_PORT:-9001}:9001'
+    volumes:
+      - minio-data:/data
+    healthcheck:
+      test: ['CMD', 'silo', 'healthcheck', 'ready']
+      interval: 15s
+      timeout: 5s
+      retries: 20
+
+  minio-init:
+    image: ${MINIO_IMAGE:-pgsty/silo:RELEASE.2026-11-09T00-00-00Z}
+    container_name: tsena-minio-init
+    depends_on:
+      minio:
+        condition: service_healthy
+    restart: 'no'
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        set -e
+        until mcli alias set local http://minio:9000 "$${MINIO_ACCESS_KEY}" "$${MINIO_SECRET_KEY}" >/dev/null 2>&1; do
+          echo "MinIO pas encore prêt, nouvelle tentative…"
+          sleep 2
+        done
+        mcli mb --ignore-existing "local/$${MINIO_BUCKET}"
+        mcli anonymous set download "local/$${MINIO_BUCKET}"
+        echo "Bucket $${MINIO_BUCKET} prêt (objets lisibles publiquement)."
+        mcli ls "local/$${MINIO_BUCKET}"
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY:-tsena}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY:-tsena-secret-change-me}
+      MINIO_BUCKET: ${MINIO_BUCKET:-tsena}
+
+volumes:
+  postgres-data:
+  minio-data:

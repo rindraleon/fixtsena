@@ -1,0 +1,41 @@
+# ============================================
+# Render Blueprint — TSENA frontend (site statique Vite)
+# ============================================
+# Si le service a été créé depuis le tableau de bord (et non via ce Blueprint), reportez
+# les mêmes réglages dans Settings → « Redirects/Rewrites » et « Headers » (voir README).
+services:
+  - type: web
+    name: frontend-projet-tsena
+    runtime: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    pullRequestPreviewsEnabled: false
+    envVars:
+      # URL publique de l'API NestJS, PRÉFIXE GLOBAL /api INCLUS.
+      # (Le client ajoute /api si seule l'origine est fournie, mais autant être explicite.)
+      - key: VITE_API_URL
+        value: https://backend-projet-tsena.onrender.com/api
+      # URL canonique du site (balises canonical / Open Graph, robots.txt, sitemap).
+      - key: VITE_SITE_URL
+        value: https://frontend-projet-tsena.onrender.com
+    routes:
+      # SPA en mode history : toute route inconnue (/produits, /connexion, /verifier-email…) sert index.html.
+      # Sans cette règle, un rafraîchissement ou un lien profond répond 404.
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      # Fichiers hashés par Vite : cache immuable d'un an (le nom change à chaque build).
+      - path: /assets/*
+        name: Cache-Control
+        value: public, max-age=31536000, immutable
+      # Le point d'entrée ne doit jamais être servi depuis un cache périmé après un déploiement.
+      - path: /index.html
+        name: Cache-Control
+        value: no-cache
+      - path: /
+        name: Cache-Control
+        value: no-cache
+      - path: /manifest.webmanifest
+        name: Cache-Control
+        value: public, max-age=3600
